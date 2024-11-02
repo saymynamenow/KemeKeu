@@ -74,10 +74,49 @@ export const loginUser = async(req: Request, res: Response):Promise<void> =>{
               }
             res.json({
                 message: "Login Success",
-                token: jwt.sign({username: response.username, id: response.userId}, env.SECRET_KEY)
+                token: jwt.sign({username: response.username, id: response.userId, role: response.typeId}, env.SECRET_KEY)
             })
         })
     } catch (error) {
         res.status(500).json({message: "Internal Server Error", error: error})
+    }
+}
+
+export const userData = async(req: Request, res: Response):Promise<void> =>{
+    try {
+        await prisma.user.findMany().then((response) =>{
+            res.json({
+                message: "User Data",
+                data: response
+            })
+        })
+    } catch (error) {
+        res.status(500).json({message: "Internal Sever Error", error: error})
+    }
+}
+
+export const changeUserStatus = async(req: Request, res: Response):Promise<void> =>{
+    try {
+        const {userId} = req.body;
+        if(!userId){
+            res.status(400).json({message: "UserId Must Be Filled"})
+            return
+        }
+
+        await prisma.user.update({
+            where: {
+                userId: parseInt(userId)
+            },
+            data: {
+                isVerified: true
+            }
+        }).then((response) =>{
+            res.json({
+                message: "User Verified",
+            })
+        })
+    } catch (error) {
+        res.status(500).json({message: "Internal Sever Error", error: error})
+        console.log(error)
     }
 }

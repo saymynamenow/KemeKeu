@@ -1,9 +1,9 @@
 import express, {Request, Response} from 'express'
 import dotenv from "dotenv"
 import { checkApiKey } from './middleware/apiAuth';
-import { checkAuthKey } from './middleware/userAuth';
+import { checkAuthKey, checkAdminAuth } from './middleware/userAuth';
 import { generateApiKey } from './controller/generateToken';
-import { registerUser, loginUser } from './controller/userController';
+import { registerUser, loginUser, userData, changeUserStatus } from './controller/userController';
 import { nlpProcess, dummyData } from './controller/aiController';
 dotenv.config();
 
@@ -22,8 +22,10 @@ apiRouter.get('/', checkApiKey, checkAuthKey, (req: Request,res: Response) =>{
 
 apiRouter.post('/userRegister', registerUser)
 apiRouter.post('/userLogin', loginUser)
-
 apiRouter.post('/nlpProcess', checkApiKey, checkAuthKey, nlpProcess)
+
+apiRouter.get('/userData', checkApiKey, checkAdminAuth, userData)
+apiRouter.put('/verifiedUser', checkApiKey, checkAdminAuth, changeUserStatus)
 
 app.use('/api', apiRouter)
 
