@@ -1,10 +1,13 @@
 import { Request, Response } from "express";
 import dotenv from 'dotenv'
 import { PrismaClient } from "@prisma/client";
+import jwt from "jsonwebtoken";
 dotenv.config();
-const env = process.env;
 
+const env = process.env;
 const prisma = new PrismaClient()
+
+
 export const registerUser = async(req: Request, res: Response):Promise<void> =>{
     var {username, password, visi, misi, kbli, ntb, location, userType} = req.body;
     if(!username || !password || !visi || !misi || !kbli || !ntb || !location || !userType){
@@ -66,9 +69,12 @@ export const loginUser = async(req: Request, res: Response):Promise<void> =>{
                 res.status(401).json({message: "Password Incorrect"})
                 return
             }
+            if (!env.SECRET_KEY) {
+                throw new Error("SECRET_KEY is not defined in the environment variables.");
+              }
             res.json({
                 message: "Login Success",
-                data: response
+                token: jwt.sign({username: response.username, id: response.userId}, env.SECRET_KEY)
             })
         })
     } catch (error) {
