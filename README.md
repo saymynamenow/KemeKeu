@@ -14,8 +14,21 @@ Hi guys, untuk API ini dokumentasi nya nyusul ya, bakal dibuat seiring waktu
 | /api/nlpProcess   | NLP to short from related to unrelated userId by Vision And Mission User                    |
 
 ### Instalation
-*Coming Soon*
+```
+1. Clone this github Project.
+2. Install package by following this line
+ > npm i
+3. Setup the enviorment in this path
+  > ./backend/
+  > ./backend/prisma
+4. AFter setup the enviorment run command to migrate the database
+  > npx prisma migrate dev
+5. Run this project using nodemon or node
+  > nodemon .\src\index.ts
+```
 
+### Note
+This is only API for search id with NLP Process
 
 
 ### AUTHOR CODE
