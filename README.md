@@ -1,6 +1,6 @@
 # API KEMENKEU
 
-Hi guys, untuk API ini dokumentasi nya nyusul ya, bakal dibuat seiring waktu
+This is API for Gov AI Hackaton
 
 
 ### MODEL
